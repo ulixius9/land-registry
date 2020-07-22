@@ -1,0 +1,94 @@
+<html>
+<head><title> Registrar dashboard </title>
+	<style>
+		td{
+			padding:10px;
+		}			
+		.container{
+			padding:20px
+		}
+		body { 
+		  	background: url("../assets/img/3.jpg") no-repeat center center fixed; 
+		  	-webkit-background-size: cover;
+		  	-moz-background-size: cover;
+		  	-o-background-size: cover;
+		  	background-size: cover;		  
+		}
+	</style>
+	<link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css">
+	<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"></script>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	  <a class="navbar-brand" href="#">LRB</a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    	<span class="navbar-toggler-icon"></span>
+	</button>
+
+	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    <ul class="navbar-nav mr-auto">
+	      <li class="nav-item">
+	        <a class="nav-link" href="/test_1/sadmin/add_user.html">Add User</a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="/test_1/sadmin/add_property.html">Add Property</a>
+	      </li>
+	      <li class="nav-item active">
+	        <a class="nav-link" href="/test_1/sadmin/approve_user.html">User Approval</a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="/test_1/sadmin/approve_property.html">Property Approval</a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="/test_1/sadmin/approve_chnage_ownership.html">Ownership Approval</a>
+	      </li>
+	      
+	    </ul>
+	  </div>	  
+	</nav>
+	<div class="container">
+	<h1>Registrar dashboard</h1>
+
+	<table width="100%" border="1" id="user_data_table" style="margin-top:30px">
+		<tr>
+			<th>Sr. No.</th>
+			<th>Name</th>
+			<th>Aadhar</th>
+			<th>Wallet Address</th>
+			<th>Action</th>
+		</tr>
+	</table>
+	</div>
+	
+</body>
+<script src="../assets/js/jquery.js"></script>
+<script src="../assets/js/bootstrap.js"></script>
+<script type="text/javascript" src="../assets/js/init_web3.js"></script>
+<script type="text/javascript">
+	console.log(contract);
+	function activate(){
+		alert("activate called")
+		$(".submit-btn").click(function(){
+			alert("at least it is inside")
+			var that=$(this);
+			add=that.attr('id');
+			contract.methods.approveUsers(add).send({from:"0xdE6f9D017C9989037858AFEc360A91dA958dDF24",gas:300000}).then(function(f){
+				that.parent().parent().remove();
+				alert("Approved Successfully");
+			});
+		});	
+	}
+	contract.methods.getUserListToBeApproved().call().then(function(x){
+		a=x;
+		var addList= a[0];
+		var userData= a[1];
+		var limit= a[2];
+		for (var i = 0; i < limit; i++) {
+			text="<tr><td>"+(i+1)+"</td><td>"+userData[i]["name"]+"</td><td>"+userData[i]["aadhar"]+"</td><td>"+addList[i]+"</td><td><button class='mx-2 submit-btn' id='"+addList[i]+"'>Approve</button></td></tr>";
+			console.log(text)
+			$('#user_data_table').append(text);
+		}
+		activate();
+	});
+</script>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>INIT</title>
+	<link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css">
+	<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"></script>
+</head>
+<body>
+
+</body>
+<script src="../assets/js/jquery.js"></script>
+<script src="../assets/js/bootstrap.js"></script>
+<script type="text/javascript" src="../assets/js/init_web3.js"></script>
+<script type="text/javascript">
+	// Add Users
+	contract.methods.addNewUser("0x90f199bAEc5e4C26a92836e64dF125B416487fF6","Ulixius",12345).send({from:"0xdE6f9D017C9989037858AFEc360A91dA958dDF24",gas:300000}).then(function(e){
+		//Approve  Users
+		contract.methods.approveUsers("0x90f199bAEc5e4C26a92836e64dF125B416487fF6").send({from:"0xdE6f9D017C9989037858AFEc360A91dA958dDF24",gas:300000}).then(function(e){
+			//Add Properties
+			contract.methods.createProperty("50000","Borivali, Mumbai","0x90f199bAEc5e4C26a92836e64dF125B416487fF6").send({from:"0xdE6f9D017C9989037858AFEc360A91dA958dDF24",gas:300000});
+		});
+
+	});
+
+
+	contract.methods.addNewUser("0xd376408A480187AdB98C9F3F6b75fC29f28B8148","Krati Paliwal",67890).send({from:"0xdE6f9D017C9989037858AFEc360A91dA958dDF24",gas:300000}).then(function(e){
+		//Approve  Users
+		contract.methods.approveUsers("0xd376408A480187AdB98C9F3F6b75fC29f28B8148").send({from:"0xdE6f9D017C9989037858AFEc360A91dA958dDF24",gas:300000}).then(function(e){
+			//Add Properties
+			contract.methods.createProperty("40000","Vasai, Palghar","0xd376408A480187AdB98C9F3F6b75fC29f28B8148").send({from:"0xdE6f9D017C9989037858AFEc360A91dA958dDF24",gas:300000});
+		});
+	});
+	
+
+
+
+	contract.methods.addNewUser("0xF5aA5917b1f7B0Ad49C11394486C7D8BB7dE15ef","Siddhi Poojari",67890).send({from:"0xdE6f9D017C9989037858AFEc360A91dA958dDF24",gas:300000}).then(function(e){
+		//Approve  Users
+		contract.methods.approveUsers("0xF5aA5917b1f7B0Ad49C11394486C7D8BB7dE15ef").send({from:"0xdE6f9D017C9989037858AFEc360A91dA958dDF24",gas:300000}).then(function(e){
+			//Add Properties
+			contract.methods.createProperty("50000","Powai, Mumbai","0xF5aA5917b1f7B0Ad49C11394486C7D8BB7dE15ef").send({from:"0xdE6f9D017C9989037858AFEc360A91dA958dDF24",gas:300000}).then(function(argument) {
+				alert('success');
+			});
+		});
+	});
+</script>
+</html>

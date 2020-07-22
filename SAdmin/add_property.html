@@ -1,0 +1,94 @@
+<html>
+<head>
+<title>Create Property</title>
+<link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css">	
+<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"></script>
+<style type="text/css">
+	body { 
+		  	background: url("../assets/img/3.jpg") no-repeat center center fixed; 
+		  	-webkit-background-size: cover;
+		  	-moz-background-size: cover;
+		  	-o-background-size: cover;
+		  	background-size: cover;		  
+		}
+</style>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	  <a class="navbar-brand" href="#">LRB</a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    	<span class="navbar-toggler-icon"></span>
+	</button>
+
+	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    <ul class="navbar-nav mr-auto">
+	      <li class="nav-item">
+	        <a class="nav-link" href="/test_1/sadmin/add_user.html">Add User</a>
+	      </li>
+	      <li class="nav-item active">
+	        <a class="nav-link" href="/test_1/sadmin/add_property.html">Add Property</a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="/test_1/sadmin/approve_user.html">User Approval</a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="/test_1/sadmin/approve_property.html">Property Approval</a>
+	      </li>
+	      <li class="nav-item">
+	        <a class="nav-link" href="/test_1/sadmin/approve_chnage_ownership.html">Ownership Approval</a>
+	      </li>
+	      
+	    </ul>
+	  </div>	  
+	</nav>
+	<div class="row p-3">
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
+			<h3 align="center">Create Property</h3>
+			<form id="add_property_form">
+				<div class="form-group">
+					<label for="address">Property Location:</label>
+					<input type="text" name="address" class="form-control" required>
+				</div>
+				<div class="form-group">
+					<label for="value" >Property Value:</label>
+					<input type="text" name="value" class="form-control" required> 
+				</div>
+				<div class="form-group">
+					<label for="wlt_add">Owner's Wallet Address:</label>
+					<input type="text" name="wlt_add" class="form-control" required>
+				</div>
+				<div class="form-group">	
+					<input type="submit" name="submit" class="btn btn-primary" style="float: right;"> 
+				</div>
+
+			</form>
+		</div>
+	</div>
+</body>
+<script src="../assets/js/jquery.js"></script>
+<script src="../assets/js/bootstrap.js"></script>
+<script type="text/javascript" src="../assets/js/init_web3.js"></script>
+<script type="text/javascript">
+	$("#add_property_form").submit(function(e){
+		e.preventDefault();
+		console.log("inside try")
+		var address=$('[name=address]').val();
+		var wlt_add=$('[name=wlt_add]').val();
+		var value=$('[name=value]').val();
+		try{
+			// console.log("inside try")
+			contract.methods.createProperty(value,address,wlt_add).send({from:"0xdE6f9D017C9989037858AFEc360A91dA958dDF24",gas:300000}).then(function(f){
+				alert("Property Created Successfully");
+				$('[name=address]').val('');
+				$('[name=wlt_add]').val('');
+				$('[name=value]').val('');	
+			});	
+		}
+		catch(e){
+			console.log(e);
+		}
+		return false;
+	});
+</script>
+</html>

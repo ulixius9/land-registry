@@ -1,0 +1,95 @@
+<html>
+<head>
+	<title> Registrar dashboard </title>
+	<style>
+		td{
+			padding:10px;
+		}
+		html,body{
+			padding:20px
+		}
+		body { 
+		  	background: url("../assets/img/3.jpg") no-repeat center center fixed; 
+		  	-webkit-background-size: cover;
+		  	-moz-background-size: cover;
+		  	-o-background-size: cover;
+		  	background-size: cover;		  
+		}
+		button{
+			margin:0px 7px !important; 
+		}
+	</style>
+	<link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.css">
+	<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"></script>
+</head>
+<body background="../assets/img/1.jpg">
+	<div>
+		<h1>Hello, <span id="user_name"></span></h1>
+		<small id="wlt_add"></small>
+	</div>
+	<table width="100%" border="1" style="margin-top:30px" id="property_data_table">
+		<tr>
+			<th>Sr. No.</th>
+			<th>Location</th>
+			<th>Value</th>
+			<th>Status</th>
+			<th>Modify</th>
+		</tr>
+	</table>
+</body>
+<script src="../assets/js/jquery.js"></script>
+<script src="../assets/js/bootstrap.js"></script>
+<script src="../assets/js/bootbox.min.js"></script>
+<script type="text/javascript" src="../assets/js/init_web3.js"></script>
+<script type="text/javascript">
+	var wallet_address="0x90f199bAEc5e4C26a92836e64dF125B416487fF6";
+	function change_owner(id) {
+		bootbox.prompt("Enter new wallet address!!",function(result){
+			contract.methods.changeOwnership(id,result).send({from:wallet_address,gas:300000}).then(function(e){
+					bootbox.alert("Your request is recorded! you will be notified once the procedure is done");
+				
+			}).catch(function(f){
+				console.log(f);
+				bootbox.alert("Property Ownership Change is already in progress");
+			});
+		});
+	}
+	function change_value(id) {
+		bootbox.prompt("Enter new value!!",function(result){
+			contract.methods.changeValue(id,result).send({from:wallet_address,gas:300000}).then(function(e){
+					console.log(e);
+					bootbox.alert("Success");	
+			}).catch(function(f){
+				console.log(f);
+				bootbox.alert("Property Ownership Change is already in progress");
+			});
+		});
+	}
+	contract.methods.getMyProperties().call({from:wallet_address}).then(function(result){
+		prop_list=result[0];
+		user_data=result[2];
+		prop_count=result[1];
+		var status={
+			1:"Pending",
+			0:"Don't Exist",
+			2:"Approved",
+			3:"Rejected"
+		}
+		$('#user_name').html(user_data['name'])
+		$('#wlt_add').html(wallet_address)
+		for(i=0;i<prop_count;i++){
+			text='<tr>';
+			text+='<td>'+(i+1)+'</td>';
+			text+='<td>'+prop_list[i]['add']+'</td>';
+			text+='<td>'+prop_list[i]['value']+'</td>';
+			text+='<td>'+status[prop_list[i]['status']]+'</td>';
+			text+='<td>';
+			text+='<button onclick="change_owner('+prop_list[i]['id']+')" id="'+prop_list[i]['id']+'" class="btn btn-primary owner">Ownership</button>';
+			text+='<button onclick="change_value('+prop_list[i]['id']+')" id="'+prop_list[i]['id']+'" class="btn btn-primary value">Value</button>'
+			text+='</td>';
+			text+='</tr>';
+			$("#property_data_table").append(text);
+		}
+	})
+</script>
+</html>
